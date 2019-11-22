@@ -6,9 +6,10 @@ export default class QuoteSearcher extends Component {
     quotes: [],
     fetching: false
   };
+
   componentDidMount() {
     this.setState({ fetching: true });
-    fetch("https://quote-garden.herokuapp.com/quotes/search/friendship")
+    fetch("https://quote-garden.herokuapp.com/quotes/search/tree")
       .then(res => res.json())
       .then(data => {
         const quotes = data.results.map(quote => quote);
