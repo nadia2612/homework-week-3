@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Quote from "./Quote";
 import Search from "./Search";
+import AddQuote from "./AddQuote";
+
 export default class QuoteSearcher extends Component {
   state = {
     quotes: [],
@@ -9,7 +11,9 @@ export default class QuoteSearcher extends Component {
 
   search = searchText => {
     this.setState({ fetching: true });
-    fetch(`https://quote-garden.herokuapp.com/quotes/search/${searchText}`)
+    fetch(
+      `https://quote-garden.herokuapp.com/quotes/search/${searchText.toLowerCase()}`
+    )
       .then(res => res.json())
       .then(data => {
         const quotes = data.results.map(quote => ({
@@ -30,6 +34,9 @@ export default class QuoteSearcher extends Component {
       quotes: quotes,
       fetching: false
     });
+    if (quotes.length === 0) {
+      alert("No quotes for your request");
+    }
   }
 
   setLiked = (id, liked) => {
@@ -38,6 +45,17 @@ export default class QuoteSearcher extends Component {
         quote._id === id ? { ...quote, liked } : quote
       )
     );
+  };
+
+  addQuote = quoteText => {
+    const quote = {
+      _id: Math.round(Math.random() * 100000),
+      quoteText,
+      quoteAuthor: "Me"
+    };
+    this.setState({
+      quotes: [...this.state.quotes, quote]
+    });
   };
 
   render() {
@@ -77,6 +95,7 @@ export default class QuoteSearcher extends Component {
             ))
           ]
         )}
+        <AddQuote addQuote={this.addQuote} />
       </div>
     );
   }
