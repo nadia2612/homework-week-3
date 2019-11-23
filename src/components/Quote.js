@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class Quote extends Component {
   getStyle = () => {
-    console.log(this.props.liked);
+   // console.log(this.props.liked);
     if (this.props.liked === true) {
       return { fontWeight: "bold", color: "green" };
     } else if (this.props.liked === false) {

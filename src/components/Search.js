@@ -5,12 +5,13 @@ export default class Search extends Component {
 
   handleChange = event => {
     this.setState({ search: event.target.value });
-    console.log("====", this.state.search);
+    //console.log("====", this.state.search);
   };
 
   submitForm = event => {
     this.props.searcher(this.state.search);
     event.preventDefault();
+   this.setState({ search: "" });
   };
 
   render() {
