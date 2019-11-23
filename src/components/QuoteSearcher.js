@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import Quote from "./Quote";
-import { queue } from "../../../../../Library/Caches/typescript/3.6/node_modules/rxjs/internal/scheduler/queue";
-
+import Search from "./Search";
 export default class QuoteSearcher extends Component {
   state = {
     quotes: [],
     fetching: false
   };
 
-  componentDidMount() {
+  search = searchText => {
     this.setState({ fetching: true });
-    fetch("https://quote-garden.herokuapp.com/quotes/search/tree")
+    fetch(`https://quote-garden.herokuapp.com/quotes/search/${searchText}`)
       .then(res => res.json())
       .then(data => {
         const quotes = data.results.map(quote => ({
@@ -18,10 +17,13 @@ export default class QuoteSearcher extends Component {
           liked: undefined
         }));
         this.updateQuotes(quotes);
-        console.log(quotes);
       })
       .catch(console.error);
-  }
+  };
+
+  // componentDidMount() {
+  //   this.search("tree");
+  // }
 
   updateQuotes(quotes) {
     this.setState({
@@ -55,11 +57,14 @@ export default class QuoteSearcher extends Component {
 
     return (
       <div className="QuoteSearcher">
+        <Search searcher={this.search} />
         {this.state.fetching ? (
           <p> Loading...</p>
         ) : (
           [
-            <h4>Liked: {likesCounter.likes} / Disliked: {likesCounter.dislikes} </h4>,
+            <h4>
+              Liked: {likesCounter.likes} / Disliked: {likesCounter.dislikes}
+            </h4>,
             this.state.quotes.map((quote, index) => (
               <Quote
                 key={index}
