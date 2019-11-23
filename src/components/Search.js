@@ -23,9 +23,7 @@ export default class Search extends Component {
             onChange={this.handleChange}
             value={this.state.search}
           />
-          <button type="submit">
-            Search!
-          </button>
+          <button type="submit">Search!</button>
         </form>
       </div>
     );

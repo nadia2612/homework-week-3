@@ -16,10 +16,23 @@ export default class QuoteSearcher extends Component {
     )
       .then(res => res.json())
       .then(data => {
-        const quotes = data.results.map(quote => ({
-          ...quote,
-          liked: undefined
-        }));
+        const quotes = data.results
+          .reduce(
+            (acc, current) => {
+              if (!acc.index[current.quoteText]) {
+                return {
+                  index: { ...acc.index, [current.quoteText]: true },
+                  results: [...acc.results, current]
+                };
+              }
+              return acc;
+            },
+            { index: {}, results: [] }
+          )
+          .results.map(quote => ({
+            ...quote,
+            liked: undefined
+          }));
         this.updateQuotes(quotes);
       })
       .catch(console.error);
@@ -75,6 +88,7 @@ export default class QuoteSearcher extends Component {
 
     return (
       <div className="QuoteSearcher">
+        <p>Number of quotes:{this.state.quotes.length}</p>
         <Search searcher={this.search} />
         {this.state.fetching ? (
           <p> Loading...</p>

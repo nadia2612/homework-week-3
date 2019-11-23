@@ -8,7 +8,7 @@ export default class AddQuote extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.addQuote(this.state.quoteText);
-    this.setState({quoteText: ""})
+    this.setState({ quoteText: "" });
   };
 
   handleChange = event => {
